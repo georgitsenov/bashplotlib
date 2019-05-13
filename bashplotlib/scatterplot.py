@@ -28,7 +28,7 @@ def get_scale(series, is_y=False, steps=20):
     return scaled_series
 
 
-def _plot_scatter(xs, ys, size, pch, colour, title, cs):
+def _plot_scatter(xs, ys, size, pch, colour, title, title_align, cs):
     plotted = set()
 
     if title:
@@ -49,7 +49,7 @@ def _plot_scatter(xs, ys, size, pch, colour, title, cs):
         print(" |")
     print("-" * (2 * (len(get_scale(xs, False, size)) + 2)))
 
-def plot_scatter(f, xs, ys, size, pch, colour, title):
+def plot_scatter(f, xs, ys, size, pch, colour, title, title_align):
     """
     Form a complex number.
 
@@ -61,6 +61,7 @@ def plot_scatter(f, xs, ys, size, pch, colour, title):
         pch -- shape of the points (any character)
         colour -- colour of the points
         title -- title of the plot
+		title_align -- title alignment for the plot
     """
     cs = None
     if f:
@@ -81,7 +82,7 @@ def plot_scatter(f, xs, ys, size, pch, colour, title):
         with open(ys) as fh:
             ys = [float(str(row).strip()) for row in fh]
 
-    _plot_scatter(xs, ys, size, pch, colour, title, cs)
+    _plot_scatter(xs, ys, size, pch, colour, title, title_align, cs)
     
 
 
@@ -91,6 +92,7 @@ def main():
 
     parser.add_option('-f', '--file', help='a csv w/ x and y coordinates', default=None, dest='f')
     parser.add_option('-t', '--title', help='title for the chart', default="", dest='t')
+    parser.add_option('-ta', '--title-align', help='title alignment for the chart', default="center", dest='ta')
     parser.add_option('-x', help='x coordinates', default=None, dest='x')
     parser.add_option('-y', help='y coordinates', default=None, dest='y')
     parser.add_option('-s', '--size', help='y coordinates', default=20, dest='size', type='int')
@@ -104,7 +106,7 @@ def main():
         opts.f = sys.stdin.readlines()
 
     if opts.f or (opts.x and opts.y):
-        plot_scatter(opts.f, opts.x, opts.y, opts.size, opts.pch, opts.colour, opts.t)
+        plot_scatter(opts.f, opts.x, opts.y, opts.size, opts.pch, opts.colour, opts.t, opts.ta)
     else:
         print("nothing to plot!")
 
